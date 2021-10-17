@@ -5,13 +5,12 @@ import (
 	"crypto/cipher"
 )
 
-// Decrypt extracts the text from the base64 encoded encrypted string using the secrete key
-// and initialization vectory used to encrypt the text
+// Decrypt extracts the text from the base64 encoded encrypted string using the secrete key and initialization vector used to encrypt the text
 //
 //plainPhrase - is a plain text extracted from an encrypted text
 //
 //valid - true if plainPhrase is a valid base64 string. It's false if plainPhrase is not a valid base64 string
-func Decrypter(encryptedPhrase, secreteKey string, iv []byte) (plainPhrase string, valid bool) {
+func Decrypt(encryptedPhrase, secreteKey string, iv []byte) (plainPhrase string, valid bool) {
 	// create the aes cipher block
 	block, err := aes.NewCipher([]byte(secreteKey))
 	if err != nil {
