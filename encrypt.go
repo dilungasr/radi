@@ -6,12 +6,12 @@ import (
 )
 
 // Encrypt encrypts plainPhrase using the given secrete key and initialization vector(iv).
-//Then returns an encrypted base64 URL-encoded string.
-func Encrypt(plainPhrase, secreteKey string, iv []byte) (encryptedPhrase string) {
+// Then returns an encrypted base64 URL-encoded string.
+func Encrypt(plainPhrase, secreteKey string, iv []byte) (encryptedPhrase string, err error) {
 	//  create aes cipher
 	block, err := aes.NewCipher([]byte(secreteKey))
 	if err != nil {
-		panic(err)
+		return encryptedPhrase, err
 	}
 
 	// convert the phrase to []bytes
@@ -21,5 +21,5 @@ func Encrypt(plainPhrase, secreteKey string, iv []byte) (encryptedPhrase string)
 	cfb.XORKeyStream(cipherText, plainText)
 
 	// return the base64Encoded string
-	return base64Encoder(cipherText)
+	return base64Encoder(cipherText), err
 }
