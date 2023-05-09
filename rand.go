@@ -6,29 +6,29 @@ import (
 )
 
 // RandString generates a random base64 URL-encoded string of length len
-func RandString(len int) (randomString string) {
+func RandString(len int) (randomString string, err error) {
 	randomBytes := make([]byte, 32)
-	_, err := rand.Read(randomBytes)
+	_, err = rand.Read(randomBytes)
 	if err != nil {
-		panic(err)
+		return randomString, err
 	}
 
 	// return base64 Encodeed string of the length provided by the caller
-	return base64.StdEncoding.EncodeToString(randomBytes)[:len]
+	return base64.StdEncoding.EncodeToString(randomBytes)[:len], err
 }
 
 // RandBytes generates a random []byte of length len
 //
 // (Very handy for creating initiliazation vectors but you are not limited to!)
-func RandBytes(len int) (randomBytes []byte) {
+func RandBytes(len int) (randomBytes []byte, err error) {
 	randBytes := make([]byte, 32)
 
-	_, err := rand.Read(randBytes)
+	_, err = rand.Read(randBytes)
 	if err != nil {
-		panic(err)
+		return randBytes, err
 	}
 
-	return randBytes[:len]
+	return randBytes[:len], err
 }
 
 // RandDigits generates secure random digits(0-9) which can be used for anything
