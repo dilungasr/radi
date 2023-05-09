@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 )
 
-//RandString generates a random base64 URL-encoded string of length len
+// RandString generates a random base64 URL-encoded string of length len
 func RandString(len int) (randomString string) {
 	randomBytes := make([]byte, 32)
 	_, err := rand.Read(randomBytes)
@@ -29,4 +29,19 @@ func RandBytes(len int) (randomBytes []byte) {
 	}
 
 	return randBytes[:len]
+}
+
+// RandDigits generates secure random digits(0-9) which can be used for anything
+// from generating OTP to verification codes
+func RandDigits(len int) (string, error) {
+	codes := make([]byte, len)
+	if _, err := rand.Read(codes); err != nil {
+		return "", err
+	}
+
+	for i := 0; i < len; i++ {
+		codes[i] = 48 + (codes[i] % 10)
+	}
+
+	return string(codes), nil
 }
