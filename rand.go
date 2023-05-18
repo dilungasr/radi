@@ -32,8 +32,25 @@ func RandBytes(len int) (randomBytes []byte, err error) {
 }
 
 // RandDigits generates secure random digits(0-9) which can be used for anything
-// from generating OTP to verification codes
-func RandDigits(len int) (string, error) {
+// from generating OTP to verification codes.
+// It doesn't  return any error but panics when encounters error
+func RandDigits(len int) string {
+	codes := make([]byte, len)
+	if _, err := rand.Read(codes); err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < len; i++ {
+		codes[i] = 48 + (codes[i] % 10)
+	}
+
+	return string(codes)
+}
+
+// RandDigits generates secure random digits(0-9) which can be used for anything
+// from generating OTP to verification codes.
+// It returns any raised error
+func RandDigitsE(len int) (string, error) {
 	codes := make([]byte, len)
 	if _, err := rand.Read(codes); err != nil {
 		return "", err
