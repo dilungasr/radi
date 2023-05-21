@@ -7,20 +7,22 @@ import (
 
 // RandString generates a random base64 URL-encoded string of length len.
 // It doesn't  return any error but panics when encounters error
-func RandString(len int) (randomString string, err error) {
+func RandStringNoErr(len int) string {
 	randomBytes := make([]byte, 32)
-	_, err = rand.Read(randomBytes)
+	_, err := rand.Read(randomBytes)
 	if err != nil {
-		return randomString, err
+		panic(err)
 	}
 
 	// return base64 Encodeed string of the length provided by the caller
-	return base64.StdEncoding.EncodeToString(randomBytes)[:len], err
+	randomString := base64.StdEncoding.EncodeToString(randomBytes)[:len]
+
+	return randomString
 }
 
 // RandString generates a random base64 URL-encoded string of length len.
 // It returns any raised error
-func RandStringE(len int) (randomString string, err error) {
+func RandString(len int) (randomString string, err error) {
 	randomBytes := make([]byte, 32)
 	_, err = rand.Read(randomBytes)
 	if err != nil {
@@ -33,9 +35,9 @@ func RandStringE(len int) (randomString string, err error) {
 
 // RandBytes generates a random []byte of length len
 //
-// (Very handy for creating initiliazation vectors but you are not limited to!)
+// (Very handy for creating initiliazation vectors but you are not limited to!).
 // It doesn't  return any error but panics when encounters error
-func RandBytes(len int) (randomBytes []byte) {
+func RandBytesNoErr(len int) []byte {
 	randBytes := make([]byte, 32)
 
 	_, err := rand.Read(randBytes)
@@ -50,7 +52,7 @@ func RandBytes(len int) (randomBytes []byte) {
 //
 // (Very handy for creating initiliazation vectors but you are not limited to!).
 // It returns any raised error
-func RandBytesE(len int) (randomBytes []byte, err error) {
+func RandBytes(len int) (randomBytes []byte, err error) {
 	randBytes := make([]byte, 32)
 
 	_, err = rand.Read(randBytes)
@@ -64,7 +66,7 @@ func RandBytesE(len int) (randomBytes []byte, err error) {
 // RandDigits generates secure random digits(0-9) which can be used for anything
 // from generating OTP to verification codes.
 // It doesn't  return any error but panics when encounters error
-func RandDigits(len int) string {
+func RandDigitsNoErr(len int) string {
 	codes := make([]byte, len)
 	if _, err := rand.Read(codes); err != nil {
 		panic(err)
@@ -80,7 +82,7 @@ func RandDigits(len int) string {
 // RandDigits generates secure random digits(0-9) which can be used for anything
 // from generating OTP to verification codes.
 // It returns any raised error
-func RandDigitsE(len int) (string, error) {
+func RandDigits(len int) (string, error) {
 	codes := make([]byte, len)
 	if _, err := rand.Read(codes); err != nil {
 		return "", err
