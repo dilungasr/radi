@@ -14,7 +14,7 @@ func Decrypt(encryptedPhrase, secreteKey string, iv []byte) (plainPhrase string,
 	// create the aes cipher block
 	block, err := aes.NewCipher([]byte(secreteKey))
 	if err != nil {
-		panic(err)
+		return plainPhrase, err
 	}
 
 	// decode the given base64 string to slice of bytes
