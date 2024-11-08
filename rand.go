@@ -15,7 +15,7 @@ func RandStringNoErr(len int) string {
 	}
 
 	// return base64 Encodeed string of the length provided by the caller
-	randomString := base64.StdEncoding.EncodeToString(randomBytes)[:len]
+	randomString := base64.URLEncoding.EncodeToString(randomBytes)[:len]
 
 	return randomString
 }
@@ -30,7 +30,7 @@ func RandString(len int) (randomString string, err error) {
 	}
 
 	// return base64 Encodeed string of the length provided by the caller
-	return base64.StdEncoding.EncodeToString(randomBytes)[:len], err
+	return base64.URLEncoding.EncodeToString(randomBytes)[:len], err
 }
 
 // RandBytes generates a random []byte of length len
