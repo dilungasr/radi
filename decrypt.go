@@ -10,7 +10,7 @@ import (
 // plainPhrase - is a plain text extracted from an encrypted text
 //
 // valid - true if plainPhrase is a valid base64 string. It's false if plainPhrase is not a valid base64 string
-func Decrypt(encryptedPhrase, secreteKey string, iv []byte) (plainPhrase string, err error) {
+func Decrypt(encryptedPhrase, secreteKey string) (plainPhrase string, err error) {
 	// create the aes cipher block
 	block, err := aes.NewCipher([]byte(secreteKey))
 	if err != nil {
@@ -19,15 +19,19 @@ func Decrypt(encryptedPhrase, secreteKey string, iv []byte) (plainPhrase string,
 
 	// decode the given base64 string to slice of bytes
 	cipherText, err := base64Decoder(encryptedPhrase)
-
 	if err != nil {
 		return plainPhrase, err
 	}
 
-	cfb := cipher.NewCFBDecrypter(block, iv)
+	// separate IV from cipherText
+	IV := cipherText[:16]
+	cipherText = cipherText[16:]
+
+	// perform decryption
+	cfb := cipher.NewCFBDecrypter(block, IV)
 	plainText := make([]byte, len(cipherText))
 	cfb.XORKeyStream(plainText, cipherText)
 
-	// return the decrypted
+	// return the decrypted text
 	return string(plainText), err
 }
